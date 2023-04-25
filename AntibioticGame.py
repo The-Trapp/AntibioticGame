@@ -3,10 +3,12 @@ from dataclasses import dataclass
 
 #variables
 bacteriaName = input("Type one of the following (A. Strep, E. Coli, P. Aeruginosa, A. Bacter, E. Faecium, E. Spp):")
+bacteriaCount = 64
 noBacteriaTurns = 0
 
-sg.change_look_and_feel('Dark Green 1')
+sg.change_look_and_feel('Dark Grey 1')
 
+#Antibody Class
 @dataclass
 class anti :
     name : str
@@ -16,22 +18,24 @@ class anti :
     researched : bool
     effect :bool
 
+def make_entry (name, turns, off, rcount,researched,effect):
+    return anti(name, turns, off, rcount,researched,effect)
+
+#Turn Class
 @dataclass
 class turn :
     effect : bool
     use : bool
 
-def make_entry (name, turns, off, rcount,researched,effect):
-    return anti(name, turns, off, rcount,researched,effect)
-
 def turns(effect,use):
     return turn(effect,use)
 
+#Make Turn
 turn1 = turns(False,False)
 turn2 = turns(False,False)
 previousTurn = turns(False,False)
 
-
+#Make all antibodies
 anti1 =make_entry("Penicillin",10,False,0,False,False)
 anti1up =make_entry("Dongicillin",10,False,0,False,False)
 
@@ -50,6 +54,7 @@ anti5up =make_entry("Busomycin",10,False,0,False,False)
 anti6 =make_entry("Ampicillin",10,False,0,False,False)
 anti6up =make_entry("Volticillin",10,False,0,False,False)
 
+#Changes based on bacteria chosen
 if(bacteriaName == "A. Strep"):
     anti1.effect =True
     anti1up.effect = True
@@ -95,51 +100,60 @@ elif(bacteriaName == "x"):
     anti1up.effect = True
     anti3.effect = True
     anti3up.effect = True
-
-bacteriaCount = 64
+else:
+    anti5.effect = True
+    anti3up.effect = True
+    anti6up.effect = True
 
 column1 = [
-    [sg.Text(anti1.name),sg.Text(anti1.turns,key='anti1')],
+    [sg.Text(anti1.name,font='Default 12'),sg.Text(anti1.turns,key='anti1',font='Default 12')],
     [sg.Button("Use",key='USE1'), sg.Button("Research",key='RESEARCH1')],
     [sg.Text("")],
-    [sg.Text(anti1up.name),sg.Text(anti1up.turns,key='anti1up')],
+    [sg.Text(anti1up.name,font='Default 12'),sg.Text(anti1up.turns,key='anti1up',font='Default 12')],
     [sg.Button("Use",key='USE1UP')]  
 ]
+
 column2 = [
-    [sg.Text(anti2.name),sg.Text(anti2.turns,key='anti2')],
+    [sg.Text(anti2.name,font='Default 12'),sg.Text(anti2.turns,key='anti2',font='Default 12')],
     [sg.Button("Use",key='USE2'), sg.Button("Research",key='RESEARCH2')],
     [sg.Text("")],
-    [sg.Text(anti2up.name),sg.Text(anti2up.turns,key='anti2up')],
+    [sg.Text(anti2up.name,font='Default 12'),sg.Text(anti2up.turns,key='anti2up',font='Default 12')],
     [sg.Button("Use",key='USE2UP')]  
 ]
+
 column3 = [
-    [sg.Text(anti3.name),sg.Text(anti3.turns,key='anti3')],
+    [sg.Text(anti3.name,font='Default 12'),sg.Text(anti3.turns,key='anti3',font='Default 12')],
     [sg.Button("Use",key='USE3'), sg.Button("Research",key='RESEARCH3')],
     [sg.Text("")],
-    [sg.Text(anti3up.name),sg.Text(anti3up.turns,key='anti3up')],
+    [sg.Text(anti3up.name,font='Default 12'),sg.Text(anti3up.turns,key='anti3up',font='Default 12')],
     [sg.Button("Use",key='USE3UP')]  
 ]
+
 column4 = [
-    [sg.Text(anti4.name),sg.Text(anti4.turns,key='anti4')],
+    [sg.Text(anti4.name,font='Default 12'),sg.Text(anti4.turns,key='anti4',font='Default 12')],
     [sg.Button("Use",key='USE4'), sg.Button("Research",key='RESEARCH4')],
     [sg.Text("")],
-    [sg.Text(anti4up.name),sg.Text(anti4up.turns,key='anti4up')],
+    [sg.Text(anti4up.name,font='Default 12'),sg.Text(anti4up.turns,key='anti4up',font='Default 12')],
     [sg.Button("Use",key='USE4UP')]  
 ]
+
 column5 = [
-    [sg.Text(anti5.name),sg.Text(anti5.turns,key='anti5')],
+    [sg.Text(anti5.name,font='Default 12'),sg.Text(anti5.turns,key='anti5',font='Default 12')],
     [sg.Button("Use",key='USE5'), sg.Button("Research",key='RESEARCH5')],
     [sg.Text("")],
-    [sg.Text(anti5up.name),sg.Text(anti5up.turns,key='anti5up')],
+    [sg.Text(anti5up.name,font='Default 12'),sg.Text(anti5up.turns,key='anti5up',font='Default 12')],
     [sg.Button("Use",key='USE5UP')]  
 ]
+
 column6 = [
-    [sg.Text(anti6.name),sg.Text(anti6.turns,key='anti6')],
+    [sg.Text(anti6.name,font='Default 12'),sg.Text(anti6.turns,key='anti6',font='Default 12')],
     [sg.Button("Use",key='USE6'), sg.Button("Research",key='RESEARCH6')],
     [sg.Text("")],
-    [sg.Text(anti6up.name),sg.Text(anti6up.turns,key='anti6up')],
+    [sg.Text(anti6up.name,font='Default 12'),sg.Text(anti6up.turns,key='anti6up',font='Default 12')],
     [sg.Button("Use",key='USE6UP')]  
 ]
+
+#Combining Columns
 layout = [
     [
         sg.Column(column1),
@@ -155,15 +169,18 @@ layout = [
         sg.Column(column6),
     ]
 ]
+
+#Adding Bacteria as a row
 layout+=[[sg.Text("Bacteria Count: ",font='Default 12'),sg.Text(bacteriaCount,font='Default  12',key='bacteria'),sg.Text("",font = 'Default 30',key='WIN')]]
 
 # Create the window
-window = sg.Window("Antibiotic Game", layout,margins=(0,300))
+window = sg.Window("Antibiotic Game", layout,margins=(0,100))
 
 # Create an event loop
 while True:
     event, values = window.read()
     print(event, values)
+
     #anti1
     if (event == "USE1" or event == "RESEARCH1") and anti1.off == False:
         if(turn1.use ==True):
@@ -216,6 +233,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti2
     if(event == "USE2" or event == "RESEARCH2") and anti2.off == False:
         if(turn1.use ==True):
@@ -268,6 +286,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti3
     if(event == "USE3" or event == "RESEARCH3") and anti3.off == False:
         if(turn1.use ==True):
@@ -320,6 +339,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti4
     if(event == "USE4" or event == "RESEARCH4") and anti4.off == False:
         if(turn1.use ==True):
@@ -372,6 +392,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti5
     if(event == "USE5" or event == "RESEARCH5") and anti5.off == False:
         if(turn1.use ==True):
@@ -424,6 +445,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti6
     if(event == "USE6" or event == "RESEARCH6") and anti6.off == False:
         if(turn1.use ==True):
@@ -476,6 +498,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti1up
     if (event == "USE1UP" and anti1.researched) and anti1up.off == False:
         if(turn1.use ==True):
@@ -521,6 +544,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti2up
     if (event == "USE2UP" and anti2.researched) and anti2up.off == False:
         if(turn1.use ==True):
@@ -566,6 +590,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti3up
     if (event == "USE3UP" and anti3.researched) and anti3up.off == False:
         if(turn1.use ==True):
@@ -611,6 +636,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti4up
     if (event == "USE4UP" and anti4.researched) and anti4up.off == False:
         if(turn1.use ==True):
@@ -656,6 +682,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti5up
     if (event == "USE5UP" and anti5.researched) and anti5up.off == False:
         if(turn1.use ==True):
@@ -701,6 +728,7 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+
     #anti6up
     if (event == "USE6UP" and anti6.researched) and anti6up.off == False:
         if(turn1.use ==True):
@@ -746,6 +774,8 @@ while True:
             if(noBacteriaTurns==4):
                 window['WIN'].update("You Win")
             window['bacteria'].update(bacteriaCount)
+    
+    #Exit Window
     if event == sg.WIN_CLOSED:
         break
 
